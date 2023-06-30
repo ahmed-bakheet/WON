@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,10 +9,10 @@ import {
   Switch,
 } from 'react-native';
 
-const CreateRoom = ({createRoomHandler}) => {
+const CreateRoom = ({ createRoomHandler }) => {
   const [name, setName] = useState('');
   const [isMultiple, setIsMultiple] = useState(false);
-  const toggleSwitch = () => setIsMultiple(previousState => !previousState);
+  const toggleSwitch = () => setIsMultiple((previousState) => !previousState);
   const [noOfGroup, setNoOfGroup] = useState(0);
 
   const sendCreateRoomApi = () => {
@@ -31,11 +31,12 @@ const CreateRoom = ({createRoomHandler}) => {
         },
       }),
     })
-      .then(response => response.json())
-      .then(res => {
+      .then((response) => response.json())
+      .then((res) => {
+        console.log('room', res.room);
         createRoomHandler(res.room);
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -44,14 +45,14 @@ const CreateRoom = ({createRoomHandler}) => {
         <TextInput
           placeholder="Add Your Name..."
           style={styles.input}
-          onChangeText={text => setName(text)}
+          onChangeText={(text) => setName(text)}
           value={name}
         />
       </View>
-      <View style={{marginLeft: 15}}>
+      <View style={{ marginLeft: 15 }}>
         <Text>IsMultiple?</Text>
         <Switch
-          trackColor={{false: '#767577', true: '#81b0ff'}}
+          trackColor={{ false: '#767577', true: '#81b0ff' }}
           thumbColor={isMultiple ? '#f5dd4b' : '#f4f3f4'}
           style={styles.checkbox}
           ios_backgroundColor="#3e3e3e"
@@ -63,7 +64,7 @@ const CreateRoom = ({createRoomHandler}) => {
         <View>
           <TextInput
             placeholder="No of Groups"
-            onChangeText={text => setNoOfGroup(text)}
+            onChangeText={(text) => setNoOfGroup(text)}
             style={styles.input}
             keyboardType="number-pad"
             value={noOfGroup}
@@ -74,7 +75,8 @@ const CreateRoom = ({createRoomHandler}) => {
         style={styles.btn}
         onPress={() => {
           sendCreateRoomApi();
-        }}>
+        }}
+      >
         <Text style={styles.btnText}>Create Room</Text>
       </TouchableOpacity>
     </ScrollView>

@@ -61,6 +61,7 @@ export default function App() {
   const createRoomHandler = (room) => {
     setIsRoom(true);
     setRoom(room);
+    setPage('listPage');
   };
   const chooseMode = (role) => {
     console.log(role);

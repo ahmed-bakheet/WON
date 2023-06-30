@@ -9,31 +9,20 @@ import {
   Switch,
 } from 'react-native';
 
-const ParticipantPage = ({ createRoomHandler }) => {
+const ParticipantPage = ({ room }) => {
   const [name, setName] = useState('');
-  const [isMultiple, setIsMultiple] = useState(false);
-  const toggleSwitch = () => setIsMultiple((previousState) => !previousState);
-  const [noOfGroup, setNoOfGroup] = useState(0);
-
-  const sendCreateRoomApi = () => {
-    fetch('https://wheel-of-names.onrender.com/rooms', {
+  const [shortCode, setShortCode] = useState('');
+  const createItem = (text) => {
+    fetch(`https://wheel-of-names.onrender.com/items?room_code=${shortCode}&item[name]=${name}`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-
-      body: JSON.stringify({
-        room: {
-          name: name,
-          multiple: isMultiple,
-          no_of_group: noOfGroup,
-        },
-      }),
     })
       .then((response) => response.json())
       .then((res) => {
-        createRoomHandler(res.room);
+        console.log('ss', res);
       })
       .catch((error) => console.error(error));
   };
@@ -42,41 +31,27 @@ const ParticipantPage = ({ createRoomHandler }) => {
     <ScrollView>
       <View>
         <TextInput
-          placeholder="Add Your Name..."
+          placeholder="group shortCode ..."
+          style={styles.input}
+          onChangeText={(text) => setShortCode(text)}
+          value={shortCode}
+        />
+      </View>
+      <View>
+        <TextInput
+          placeholder="Your Name..."
           style={styles.input}
           onChangeText={(text) => setName(text)}
           value={name}
         />
       </View>
-      <View style={{ marginLeft: 15 }}>
-        <Text>IsMultiple?</Text>
-        <Switch
-          trackColor={{ false: '#767577', true: '#81b0ff' }}
-          thumbColor={isMultiple ? '#f5dd4b' : '#f4f3f4'}
-          style={styles.checkbox}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isMultiple}
-        />
-      </View>
-      {isMultiple && (
-        <View>
-          <TextInput
-            placeholder="No of Groups"
-            onChangeText={(text) => setNoOfGroup(text)}
-            style={styles.input}
-            keyboardType="number-pad"
-            value={noOfGroup}
-          />
-        </View>
-      )}
       <TouchableOpacity
         style={styles.btn}
         onPress={() => {
-          sendCreateRoomApi();
+          createItem();
         }}
       >
-        <Text style={styles.btnText}>Create Room</Text>
+        <Text style={styles.btnText}>Subscripe</Text>
       </TouchableOpacity>
     </ScrollView>
   );
