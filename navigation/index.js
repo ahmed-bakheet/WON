@@ -1,23 +1,19 @@
 // If you are not familiar with React Navigation, check out the "Fundamentals" guide:
 // https://reactnavigation.org/docs/getting-started
-import {
-  DarkTheme,
-  DefaultTheme,
-  NavigationContainer,
-} from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import NotFoundScreen from "../screens/NotFoundScreen";
-import BottomTabNavigator from "./BottomTabNavigator";
-import LinkingConfiguration from "./LinkingConfiguration";
+import NotFoundScreen from '../screens/NotFoundScreen';
+import BottomTabNavigator from './BottomTabNavigator';
+import LinkingConfiguration from './LinkingConfiguration';
 
-export default function Navigation({ colorScheme }) {
+export default function Navigation({ colorScheme, isRoom }) {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator />
+      <RootNavigator isRoom={isRoom} />
     </NavigationContainer>
   );
 }
@@ -26,15 +22,14 @@ export default function Navigation({ colorScheme }) {
 // Read more here: https://reactnavigation.org/docs/modal
 const Stack = createStackNavigator();
 
-function RootNavigator() {
+function RootNavigator({ isRoom }) {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Root" component={BottomTabNavigator} />
       <Stack.Screen
-        name="NotFound"
-        component={NotFoundScreen}
-        options={{ title: "Oops!" }}
+        name="Root"
+        component={(props) => <BottomTabNavigator {...props} isRoom={isRoom} />}
       />
+      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
   );
 }
