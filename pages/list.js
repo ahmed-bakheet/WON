@@ -147,7 +147,8 @@ const List = ({ room }) => {
       if (identifier && message) {
         console.log(`Received message from ${identifier}: ${message}`);
         console.log('message', message);
-        setItems(...items, message[0]);
+        setItems((prevItems) => [...prevItems, message]);
+
         // Handle the received message as needed
       }
     };
